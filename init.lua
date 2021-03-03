@@ -31,6 +31,7 @@ function M.increment(incr)
     start + #new_value, -- end col
     { new_value }
   )
+  vim.api.nvim_win_set_cursor(0, {cursor[1], start + #new_value - 1})
 end
 
 return M
