@@ -52,4 +52,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ==============================================================================
-vim:tw=78:ts=8:ft=help:norlI
+vim:tw=78:ts=8:ft=help
