@@ -1,8 +1,13 @@
 nnoremap <Plug>PatternIncrement :<C-U>call <SID>PatternIncrement(v:count1)<CR>
 nnoremap <Plug>PatternDecrement :<C-U>call <SID>PatternDecrement(v:count1)<CR>
 
+vnoremap <Plug>PatternIncrementRange :call <SID>PatternIncrement(v:count1)<CR>
+vnoremap <Plug>PatternDecrementRange :call <SID>PatternIncrement(v:count1)<CR>
+
 nmap <C-a> <Plug>PatternIncrement
 nmap <C-x> <Plug>PatternDecrement
+vmap <C-a> <Plug>PatternIncrementRange
+vmap <C-x> <Plug>PatternDecrementRange
 
 function! s:PatternIncrement(increment)
   call luaeval('require"nrpattern".increment(_A)', a:increment)
