@@ -36,13 +36,6 @@ Following topics are planned to be added:
   * Binary formatting
 
 
-## Known issues
-
-When the incremented value uses more characters than the original value, the
-characters after the value are overwritten. Ideally they would push the remaining
-characters to the right.
-
-
 ## Thanks
 
 Thanks to @smolck for the initial code snippet to start this plugin.

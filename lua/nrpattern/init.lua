@@ -63,7 +63,7 @@ function M.increment(incr)
     return
   end
 
-  local prefix, value = text:match(match.pattern, start)
+  local s, e, prefix, value = text:find(match.pattern, start)
   if not value and prefix then
     value = prefix
     prefix = ''
@@ -77,17 +77,15 @@ function M.increment(incr)
   value = tonumber(value, match.base) + incr
 
   new_value = string.format(match.format, prefix, value)
-  -- TODO: how to increase text range used?
-  --       now it will overwrite trailing chars when new value is larger
-  vim.api.nvim_buf_set_text(
+  new_line = text:sub(1, s - 1) .. new_value .. text:sub(e + 1)
+  vim.api.nvim_buf_set_lines(
     0,
     cursor[1] - 1, -- start row
-    start, -- start col
-    cursor[1] - 1, -- end row
-    start + #new_value, -- end col
-    { new_value }
+    cursor[1], -- end row
+    true,
+    { new_line }
   )
-  vim.api.nvim_win_set_cursor(0, {cursor[1], start + #new_value - 1})
+  vim.api.nvim_win_set_cursor(0, {cursor[1], e - 1})
 end
 
 return M
