@@ -29,10 +29,11 @@ configurable so it will support any format in use.
 Following topics are planned to be added:
 
   * Configurable patterns
-  * Visual mode increments/decrements repeating
+  * Visual mode increments/decrements with repeating
   * Incremental mode: `g<ctrl-a>`
   * Insert/re-insert exising separators. E.g. `32'haabb_ccdd`
   * Keep original case, for now every value is lowercased
+  * Binary formatting
 
 
 ## Known issues
