@@ -1,8 +1,8 @@
-nnoremap <Plug>PatternIncrement :<C-U>call <SID>PatternIncrement(v:count1)<CR>
-nnoremap <Plug>PatternDecrement :<C-U>call <SID>PatternDecrement(v:count1)<CR>
+nnoremap <silent> <Plug>PatternIncrement :<C-U>call <SID>PatternIncrement(v:count1)<CR>
+nnoremap <silent> <Plug>PatternDecrement :<C-U>call <SID>PatternDecrement(v:count1)<CR>
 
-vnoremap <Plug>PatternIncrementRange :call <SID>PatternIncrement(v:count1)<CR>
-vnoremap <Plug>PatternDecrementRange :call <SID>PatternIncrement(v:count1)<CR>
+vnoremap <silent> <Plug>PatternIncrementRange :call <SID>PatternIncrement(v:count1)<CR>
+vnoremap <silent> <Plug>PatternDecrementRange :call <SID>PatternIncrement(v:count1)<CR>
 
 nmap <C-a> <Plug>PatternIncrement
 nmap <C-x> <Plug>PatternDecrement

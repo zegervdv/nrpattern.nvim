@@ -20,7 +20,7 @@ local patterns = {
     pattern = "(%d+)",
     base = 10,
     format = "%s%d",
-  }
+  },
 }
 
 
