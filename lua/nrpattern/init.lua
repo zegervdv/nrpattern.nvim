@@ -5,11 +5,13 @@ local patterns = {
     pattern = "(%d*)'h([%x_]+)",
     base = 16,
     format = "%s'h%x",
+    separators = {"_"},
   },
   {
     pattern = "(%d*)'d([%d_]+)",
     base = 10,
     format = "%s'd%d",
+    separators = {"_"},
   },
   {
     pattern = "(0[xX])([%x]+)",
@@ -67,8 +69,13 @@ function M.increment(incr)
     prefix = ''
   end
 
+  if match.separators then
+    for _, separator in ipairs(match.separators) do
+      value = value:gsub(separator, "")
+    end
+  end
   value = tonumber(value, match.base) + incr
-  
+
   new_value = string.format(match.format, prefix, value)
   -- TODO: how to increase text range used?
   --       now it will overwrite trailing chars when new value is larger
