@@ -85,7 +85,7 @@ function M.increment(incr)
     true,
     { new_line }
   )
-  vim.api.nvim_win_set_cursor(0, {cursor[1], e - 1})
+  vim.api.nvim_win_set_cursor(0, {cursor[1], s + #new_value - 2})
 end
 
 return M
