@@ -1,12 +1,28 @@
 local M = {}
 
-local bases = {
-  h = 16,
-  b = 2,
-  d = 10,
+local patterns = {
+  {
+    pattern = "(%d*)'h([%x_]+)",
+    base = 16,
+    format = "%s'h%x",
+  },
+  {
+    pattern = "(%d*)'d([%d_]+)",
+    base = 10,
+    format = "%s'd%d",
+  },
+  {
+    pattern = "(0[xX])([%x]+)",
+    base = 16,
+    format = "%s%x",
+  },
+  {
+    pattern = "(%d+)",
+    base = 10,
+    format = "%s%d",
+  }
 }
 
-local pattern = "(%d*)'([hdb])([%d%a_]+)"
 
 function M.increment(incr) 
   local cursor = vim.api.nvim_win_get_cursor(0)
@@ -17,17 +33,43 @@ function M.increment(incr)
   cursorword = cursorword .. vim.fn.matchstr(text:sub(cursor[2] + 1), [[^\k*]]):sub(2)
 
   local start = 0
-  if cursorword:match(pattern) then
-    start = beginning
-  else
-    start = text:find(pattern, cursor[2]) - 1
+  local match = nil
+
+  for _, option in ipairs(patterns) do
+    if cursorword:match(option.pattern) then
+      start = beginning
+      match = option
+      break
+    end
   end
 
-  local prefix, base, value = text:match(pattern, start)
-  value = tonumber(value, bases[base]) + incr
-  
+  if not match then
+    start = cursor[2]
+    for _, option in ipairs(patterns) do
+      local matchstart = text:find(option.pattern, cursor[2] + 1)
 
-  new_value = string.format("%s'%s%x", prefix, base, value)
+      if matchstart then
+        if not match or matchstart < start then
+          start = matchstart - 1
+          match = option
+        end
+      end
+    end
+  end
+
+  if not match then
+    return
+  end
+
+  local prefix, value = text:match(match.pattern, start)
+  if not value and prefix then
+    value = prefix
+    prefix = ''
+  end
+
+  value = tonumber(value, match.base) + incr
+  
+  new_value = string.format(match.format, prefix, value)
   -- TODO: how to increase text range used?
   --       now it will overwrite trailing chars when new value is larger
   vim.api.nvim_buf_set_text(
