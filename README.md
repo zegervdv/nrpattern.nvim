@@ -42,3 +42,6 @@ characters after the value are overwritten. Ideally they would push the remainin
 characters to the right.
 
 
+## Thanks
+
+Thanks to @smolck for the initial code snippet to start this plugin.
