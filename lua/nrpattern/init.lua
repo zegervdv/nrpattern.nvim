@@ -5,13 +5,13 @@ local patterns = {
     pattern = "(%d*)'h([%x_]+)",
     base = 16,
     format = "%s'h%x",
-    separators = {"_"},
+    separator = "_",
   },
   {
     pattern = "(%d*)'d([%d_]+)",
     base = 10,
     format = "%s'd%d",
-    separators = {"_"},
+    separator = "_",
   },
   {
     pattern = "(0[xX])([%x]+)",
@@ -24,7 +24,6 @@ local patterns = {
     format = "%s%d",
   },
 }
-
 
 function M.increment(incr) 
   local cursor = vim.api.nvim_win_get_cursor(0)
@@ -66,17 +65,19 @@ function M.increment(incr)
   local s, e, prefix, value = text:find(match.pattern, start)
   if not value and prefix then
     value = prefix
-    prefix = ''
+    prefix = ""
   end
+  local prexiflen = (e - s) - #value
 
-  if match.separators then
-    for _, separator in ipairs(match.separators) do
-      value = value:gsub(separator, "")
-    end
+  local has_separator = false
+  if match.separator then
+    value = value:gsub(match.separator, "")
+    has_separator = true
   end
   value = tonumber(value, match.base) + incr
 
   new_value = string.format(match.format, prefix, value)
+
   new_line = text:sub(1, s - 1) .. new_value .. text:sub(e + 1)
   vim.api.nvim_buf_set_lines(
     0,
