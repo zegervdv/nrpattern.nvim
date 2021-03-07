@@ -22,7 +22,11 @@ Supports repeating with `.` when `tpope/vim-repeat` is installed.
 
 ## TODO
 
-Currently this plugin only works for SystemVerilog style formats: `17'haabb`.
+Currently this plugin only works for a limited set of formats:
+  * Decimals: `1231`
+  * Hexadecimal: `0xaaff`
+  * SystemVerilog: `17'haabb` and `32'd123123`
+
 The intent is to make the pattern for number representations flexible and
 configurable so it will support any format in use.
 
@@ -34,6 +38,7 @@ Following topics are planned to be added:
   * Insert/re-insert exising separators. E.g. `32'haabb_ccdd`
   * Keep original case, for now every value is lowercased
   * Binary formatting
+  * Negative numbers
 
 
 ## Thanks
