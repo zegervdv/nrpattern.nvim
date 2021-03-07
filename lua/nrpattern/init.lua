@@ -109,13 +109,13 @@ function M.increment_range(incr)
   end
 
   local start_line = math.min(start_sel[2], end_sel[2]) - 1
-  local start_col = math.min(start_sel[3], end_sel[3])
+  local start_col = math.min(start_sel[3], end_sel[3]) - 1
   local end_line = math.max(start_sel[2], end_sel[2])
 
   local text = vim.api.nvim_buf_get_lines(0, start_line, end_line, true)
   local new_lines = {}
   for _, line in ipairs(text) do
-    new_line, offset = match_word(line, start_col - 1, incr)
+    new_line, offset = match_word(line, start_col, incr)
     if new_line then
       table.insert(new_lines, new_line)
     else
@@ -131,7 +131,7 @@ function M.increment_range(incr)
     new_lines
   )
   -- Match builtin behaviour, jump to start of block (upper left corner)
-  vim.api.nvim_win_set_cursor(0, {start_line + 1, start_col - 1})
+  vim.api.nvim_win_set_cursor(0, {start_line + 1, start_col})
 end
 
 return M
