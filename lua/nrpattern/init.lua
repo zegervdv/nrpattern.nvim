@@ -4,24 +4,30 @@ local patterns = {
   {
     pattern = "(%d*)'h([%x_]+)",
     base = 16,
-    format = "%s'h%x",
-    separator = "_",
+    format = "%s'h%s",
+    separator = {
+      char = "_",
+      group = 4,
+    }
   },
   {
     pattern = "(%d*)'d([%d_]+)",
     base = 10,
-    format = "%s'd%d",
-    separator = "_",
+    format = "%s'd%s",
+    separator = {
+      char = "_",
+      group = 3,
+    }
   },
   {
     pattern = "(0[xX])([%x]+)",
     base = 16,
-    format = "%s%x",
+    format = "%s%s",
   },
   {
     pattern = "(%d+)",
     base = 10,
-    format = "%s%d",
+    format = "%s%s",
   },
 }
 
@@ -67,13 +73,41 @@ function match_word(text, col, incr)
   local prexiflen = (e - s) - #value
 
   local has_separator = false
-  if match.separator then
-    value = value:gsub(match.separator, "")
+  if match.separator and value:find(match.separator.char) then
+    value = value:gsub(match.separator.char, "")
     has_separator = true
   end
   value = tonumber(value, match.base) + incr
 
-  new_value = string.format(match.format, prefix, value)
+  local value_formatted
+  if match.base == 10 then
+    value_formatted = string.format("%d", value)
+  elseif match.base == 16 then
+    value_formatted = string.format("%x", value)
+  end
+
+  if has_separator then
+    local substring = ""
+    for i = 1, math.ceil(#value_formatted / match.separator.group) do
+      local low = #value_formatted - i * match.separator.group + 1
+      local high = #value_formatted - (i - 1) * match.separator.group
+
+      if low < 0 then
+        low = 0
+      end
+
+      local slice = value_formatted:sub(low, high)
+      if i == 1 then
+        substring = slice
+      else
+        substring = slice .. match.separator.char .. substring
+      end
+    end
+
+    value_formatted = substring
+  end
+
+  new_value = string.format(match.format, prefix, value_formatted)
 
   new_line = text:sub(1, s - 1) .. new_value .. text:sub(e + 1)
   return new_line, s + #new_value
