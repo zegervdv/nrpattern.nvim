@@ -19,6 +19,13 @@ But there are many more formats used by the various programming languages.
 
 Supports repeating with `.` when `tpope/vim-repeat` is installed.
 
+Separators are inserted in the value when one was already present in the value.
+The separators are however inserted in fixed groups, regardless of the previous
+location of the separators.
+
+For example the value `32'hff_fff_ff7` will become `32'hffff_fff8`, because the
+`group` setting for SystemVerilog hexadecimal values is set to 4.
+
 
 ## TODO
 
@@ -35,10 +42,14 @@ Following topics are planned to be added:
   * Configurable patterns
   * Visual mode increments/decrements with repeating
   * Incremental mode: `g<ctrl-a>`
-  * Insert/re-insert exising separators. E.g. `32'haabb_ccdd`
   * Keep original case, for now every value is lowercased
   * Binary formatting
   * Negative numbers
+  * Numbers over 63bits: `tonumber` seems to parse the values as signed.
+
+If possible (harder problems):
+
+  * Preserve original location of separators
 
 
 ## Thanks
