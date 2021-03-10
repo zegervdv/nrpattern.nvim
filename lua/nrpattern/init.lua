@@ -41,19 +41,24 @@ local patterns = {
     format = "%s%s",
   },
   {
-    pattern = "(0)(%d+)",
-    base = 8,
+    pattern = "(-?%d+)",
+    base = 10,
     format = "%s%s",
   },
   {
-    pattern = "(%d+)",
-    base = 10,
+    pattern = "(0)(%d+)",
+    base = 8,
     format = "%s%s",
   },
 }
 
 function parse_value(value, base, increment)
-  val = bigint:new(value, "+", base)
+  sign = "+"
+  if value:sub(1, 1) == "-" then
+    sign = "-"
+  end
+  val = bigint:new(value, sign, base)
+
   if increment >= 0 then
     sign = "+"
   else

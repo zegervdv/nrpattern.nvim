@@ -45,7 +45,6 @@ Following topics are planned to be added:
   * Visual mode increments/decrements with repeating
   * Incremental mode: `g<ctrl-a>`
   * Keep original case, for now every value is lowercased
-  * Negative numbers
 
 If possible (harder problems):
 
