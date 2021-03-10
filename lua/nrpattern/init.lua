@@ -55,10 +55,11 @@ local patterns = {
 function parse_value(value, base, increment)
   val = bigint:new(value, "+", base)
   if increment >= 0 then
-    return val:add(bigint:new(string.format("%d", increment), '+'))
+    sign = "+"
   else
-    return val:subtract(bigint:new(string.format("%d", increment), '+'))
+    sign = "-"
   end
+  return val:add(bigint:new(string.format("%d", increment), sign))
 end
 
 function format_value(value, base)
