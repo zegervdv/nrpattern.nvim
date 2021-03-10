@@ -10,7 +10,7 @@ local patterns = {
     separator = {
       char = "_",
       group = 4,
-    }
+    },
   },
   {
     pattern = "(%d*)'d([%d_]+)",
@@ -19,13 +19,27 @@ local patterns = {
     separator = {
       char = "_",
       group = 3,
-    }
+    },
+  },
+  {
+    pattern = "(%d*)'b([01_]+)",
+    base = 2,
+    format = "%s'b%s",
+    separator = {
+      char = "_",
+      group = 4,
+    },
   },
   {
     pattern = "(0[xX])([%x]+)",
     base = 16,
     format = "%s%s",
   },
+  {
+    pattern = "(0b([01]+))",
+    base = 2,
+    format = "%s%s",
+  }
   {
     pattern = "(%d+)",
     base = 10,
