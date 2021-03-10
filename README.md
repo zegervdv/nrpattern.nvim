@@ -26,13 +26,15 @@ location of the separators.
 For example the value `32'hff_fff_ff7` will become `32'hffff_fff8`, because the
 `group` setting for SystemVerilog hexadecimal values is set to 4.
 
-
-## TODO
+## Supported Formats
 
 Currently this plugin only works for a limited set of formats:
   * Decimals: `1231`
   * Hexadecimal: `0xaaff`
-  * SystemVerilog: `17'haabb` and `32'd123123`
+  * Binary: `0b110011`
+  * SystemVerilog: `17'haabb`, `32'd123123` and `8'b110011`
+
+## TODO
 
 The intent is to make the pattern for number representations flexible and
 configurable so it will support any format in use.
