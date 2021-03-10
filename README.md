@@ -45,7 +45,6 @@ Following topics are planned to be added:
   * Keep original case, for now every value is lowercased
   * Binary formatting
   * Negative numbers
-  * Numbers over 63bits: `tonumber` seems to parse the values as signed.
 
 If possible (harder problems):
 
@@ -55,3 +54,6 @@ If possible (harder problems):
 ## Thanks
 
 Thanks to @smolck for the initial code snippet to start this plugin.
+
+The `BigInteger.lua` file to enable support for large numbers (over 64 bits) is
+copyrighted to @a-benlolo, [repo](https://github.com/A-Benlolo/BigInteger.lua).

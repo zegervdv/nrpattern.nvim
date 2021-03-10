@@ -1,3 +1,5 @@
+local bigint = require"nrpattern.vendor.BigInteger"
+
 local M = {}
 
 local patterns = {
@@ -30,6 +32,19 @@ local patterns = {
     format = "%s%s",
   },
 }
+
+function parse_value(value, base, increment)
+  val = bigint:new(value, "+", base)
+  if increment >= 0 then
+    return val:add(bigint:new(string.format("%d", increment), '+'))
+  else
+    return val:subtract(bigint:new(string.format("%d", increment), '+'))
+  end
+end
+
+function format_value(value, base)
+  return value:toString(base):lower()
+end
 
 function match_word(text, col, incr)
   -- Inspired by nvim-cursorline.lua
@@ -77,14 +92,9 @@ function match_word(text, col, incr)
     value = value:gsub(match.separator.char, "")
     has_separator = true
   end
-  value = tonumber(value, match.base) + incr
+  local parsed_value = parse_value(value, match.base, incr)
 
-  local value_formatted
-  if match.base == 10 then
-    value_formatted = string.format("%d", value)
-  elseif match.base == 16 then
-    value_formatted = string.format("%x", value)
-  end
+  local value_formatted = format_value(parsed_value, match.base)
 
   if has_separator then
     local substring = ""

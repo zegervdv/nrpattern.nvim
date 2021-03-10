@@ -51,5 +51,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+
+The BigInteger (lua/nrpattern/vendor/BigInteger.lua) module distributed with 
+this plugin is copyrigthed to Alexander Benlolo <abenlo1@students.towson.edu>.
+Source: https://github.com/A-Benlolo/BigInteger.lua
+
 ==============================================================================
 vim:tw=78:ts=8:ft=help
