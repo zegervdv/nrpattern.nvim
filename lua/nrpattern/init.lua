@@ -39,7 +39,12 @@ local patterns = {
     pattern = "(0b([01]+))",
     base = 2,
     format = "%s%s",
-  }
+  },
+  {
+    pattern = "(0)(%d+)",
+    base = 8,
+    format = "%s%s",
+  },
   {
     pattern = "(%d+)",
     base = 10,
