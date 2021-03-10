@@ -56,4 +56,4 @@ If possible (harder problems):
 Thanks to @smolck for the initial code snippet to start this plugin.
 
 The `BigInteger.lua` file to enable support for large numbers (over 64 bits) is
-copyrighted to @a-benlolo, [repo](https://github.com/A-Benlolo/BigInteger.lua).
+copyrighted to @a-benlolo: [BigInteger.lua repository](https://github.com/A-Benlolo/BigInteger.lua).
