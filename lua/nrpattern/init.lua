@@ -168,7 +168,7 @@ function M.increment(incr)
   vim.api.nvim_win_set_cursor(0, {cursor[1], offset - 2})
 end
 
-function M.increment_range(incr)
+function M.increment_range(incr, multiply)
   local start_sel = vim.fn.getpos("'<")
   local end_sel = vim.fn.getpos("'>")
 
@@ -183,8 +183,13 @@ function M.increment_range(incr)
 
   local text = vim.api.nvim_buf_get_lines(0, start_line, end_line, true)
   local new_lines = {}
-  for _, line in ipairs(text) do
-    new_line, offset = match_word(line, start_col, incr)
+  for i, line in ipairs(text) do
+    local increment = incr;
+    if multiply then
+      increment = incr * i
+    end
+
+    new_line, offset = match_word(line, start_col, increment)
     if new_line then
       table.insert(new_lines, new_line)
     else
