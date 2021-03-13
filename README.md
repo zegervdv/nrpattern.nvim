@@ -40,7 +40,9 @@ Plug 'zegervdv/nrpattern.nvim'
 use {
   'zegervdv/nrpattern.nvim',
   config = function()
-    -- Options go here
+    -- Basic setup
+    -- See below for more options
+    require"nrpattern".setup()
   end,
 }
 ```
@@ -67,6 +69,9 @@ patterns["(%d*)'h([%x_]+)"].separator.group = 8
 
 -- Remove a pattern
 patterns["(%d*)'h([%x_]+)"] = nil
+
+-- Call the setup to enable the patterns
+require"nrpattern".setup(patterns)
 ```
 
 ### Options
