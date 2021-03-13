@@ -22,8 +22,87 @@ more numerical formats than Neovim currently supports.
 ==============================================================================
  2. CONFIGURATION                                    *nrpattern-configuration*
 
- This section is TODO
+To enable |nrpattern| you need to call the `setup` function: >
 
+  require'nrpattern'.setup()
+
+`setup` takes as an optional argument a dictionary where the keys are the
+patterns to match numbers with and the values are configuration options.
+
+------------------------------------------------------------------------------
+ 2.1 PATTERN                                               *nrpattern-pattern*
+
+ The pattern is used to detect numbers in your code or textfile.
+ It uses Lua regex patterns, and must consist of 2 capture groups.
+
+ The first group may be an empty match and will be labelled as the prefix.
+ It will be pre-pended again to the updated value before inserting it back
+ into the buffer.
+
+ The second capture group will be used as the actual value. This match may 
+ only contain digits or hexadecimal characters, or the separator characters.
+
+------------------------------------------------------------------------------
+ 2.2 OPTIONS                                               *nrpattern-options*
+
+ The values of the configuration dictionary are dictionaries itself with 
+ options on how to process the value.
+
+ The options are:
+
+ base~
+
+ The base to parse the value with, for example 10, 16, 8 or 2.
+
+ format~
+
+ The output format for the value. Uses 2 string placeholders: one for the
+ prefix and one for the updated value.
+
+ For example, to generate SystemVerilog style `32'haaaa_bbbb` use "%s'h%s".
+
+ priority~
+
+ The priority to match the pattern with. Lower value means this pattern will
+ match first. The first pattern that matches will be used.
+
+ This can be useful when certain patterns are contained in other patterns
+ and a distinction has to be made.
+
+ separator~
+
+ The separator entry is an optional dictionary. It configures the behavior
+ of separators that can be found in the value.
+
+ For example, SystemVerilog allows to add `_` characters to group digits to
+ make them more readible. 
+ A 32 bit hexadecimal value could be written as `32'haaaa_bbbb`.
+ Where the `_` groups 4 digits. When dealing with decimal numbers the grouping
+ is more often done per 3.
+
+ This can be configured in the separator config: >
+      separator = {
+        char = '_',
+        group = 4,
+      }
+
+------------------------------------------------------------------------------
+ 2.3 EXAMPLE CONFIG                                 *nrpattern-example-config*
+
+ This example shows how to configure |nrpattern| to match SystemVerilog
+ hexadecimal values: >
+
+    patterns = {
+      ["(%d*)'h([%x_]+)"] = {
+        base = 16,
+        format = "%s'h%s",
+        priority = 10,
+        separator = {
+          char = "_",
+          group = 4,
+        },
+      },
+    }
 
 ==============================================================================
  3. LICENSE                                                *nrpattern-license*
