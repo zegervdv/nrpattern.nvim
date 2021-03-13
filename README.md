@@ -3,7 +3,7 @@
 A Neovim plugin to expand the number formats supported to increment or
 decrement.
 
-**This plugin uses lua and therefore requires Neovim 0.5.**
+**This plugin requires Neovim 0.5.**
 
 ## Details
 
@@ -15,16 +15,12 @@ mappings. However, these only work for a limited set of formats:
  * Octal: `0755`
  * Binary: `0b110011`
 
-But there are many more formats used by the various programming languages.
+But there are many more formats used by the various programming languages in
+existance today, and likely many more will follow.
+
+This plugin allows you to define custom patterns.
 
 Supports repeating (partially) with `.` when `tpope/vim-repeat` is installed.
-
-Separators are inserted in the value when one was already present in the value.
-The separators are however inserted in fixed groups, regardless of the previous
-location of the separators.
-
-For example the value `32'hff_fff_ff7` will become `32'hffff_fff8`, because the
-`group` setting for SystemVerilog hexadecimal values is set to 4.
 
 ## Installation
 
@@ -98,12 +94,20 @@ For every pattern you can set some options:
     * `char` : Charactor to insert as separator
     * `group` : How many digits to group (e.g., add a `,` every 3 digits)
 
+Separators are inserted in the value when one was already present in the value.
+The separators are however inserted in fixed groups, regardless of the previous
+location of the separators.
+
+For example the value `32'hff_fff_ff7` will become `32'hffff_fff8`, because the
+`group` setting for SystemVerilog hexadecimal values is set to 4.
+
 ## TODO
 
 Following topics are planned to be added:
 
-  * Visual mode increments/decrements with repeating
+  * Make repeating work for visually selected lines or blocks
   * Keep original case, for now every value is lowercased
+  * Support for cycling patterns: e.g. `true` to `false`
 
 If possible (harder problems):
 
