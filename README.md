@@ -17,7 +17,7 @@ mappings. However, these only work for a limited set of formats:
 
 But there are many more formats used by the various programming languages.
 
-Supports repeating with `.` when `tpope/vim-repeat` is installed.
+Supports repeating (partially) with `.` when `tpope/vim-repeat` is installed.
 
 Separators are inserted in the value when one was already present in the value.
 The separators are however inserted in fixed groups, regardless of the previous
@@ -26,22 +26,77 @@ location of the separators.
 For example the value `32'hff_fff_ff7` will become `32'hffff_fff8`, because the
 `group` setting for SystemVerilog hexadecimal values is set to 4.
 
-## Supported Formats
+## Installation
 
-Currently this plugin only works for a limited set of formats:
-  * Decimals: `1231`
-  * Hexadecimal: `0xaaff`
-  * Binary: `0b110011`
-  * SystemVerilog: `17'haabb`, `32'd123123` and `8'b110011`
+ * vim-plug
+
+``` vimscript
+Plug 'zegervdv/nrpattern.nvim'
+```
+
+ * packer.nvim
+
+``` lua
+use {
+  'zegervdv/nrpattern.nvim',
+  config = function()
+    -- Options go here
+  end,
+}
+```
+
+## Configuration
+
+Nrpattern.nvim comes with a couple of default patterns installed, but you can
+add more, disable some or change their options.
+
+``` lua
+-- Get the default dict of patterns
+local patterns = require"nrpattern.default"
+
+-- The dict uses the pattern as key, and has a dict of options as value.
+-- To add a new pattern, for example the VHDL x"aabb" format.
+patterns['()x"(%x+)"'] = {
+  base = 16, -- Hexadecimal
+  format = '%sx"%s"', -- Output format
+  priority = 15, -- Determines order in pattern matching
+}
+
+-- Change a default setting:
+patterns["(%d*)'h([%x_]+)"].separator.group = 8
+
+-- Remove a pattern
+patterns["(%d*)'h([%x_]+)"] = nil
+```
+
+### Options
+
+The pattern must have two capture groups. The first is the prefix and may be an
+empty match. 
+The second must match the value with any possible separators.
+
+For example, to match `32'haaaa_bbbb` as a hexadecimal value, you need the
+pattern `"(%d*)'h([%x_]+)"`:
+ * `(%d*)`: The prefix capture group, matches zero or more digits
+ * `'h`: Literally match this string
+ * `([%x_]+)`: The value capture group, match any hexadecimal charactor or `_`
+ once or more
+
+For every pattern you can set some options:
+
+  * `base` : The base of the format, e.g. 10 for decimal, 16 for hex
+  * `format` : The output format, must have 2 string patterns ('%s'), first is
+  prefix (and may be empty), second is new value
+  * `priority` : Order in which to match patterns, lower is earlier. See
+  [default.lua](https://github.com/zegervdv/nrpattern.nvim/blob/master/lua/nrpattern/init.lua) for default values.
+  * `separator` : Optional dict, for digit separators in pattern
+    * `char` : Charactor to insert as separator
+    * `group` : How many digits to group (e.g., add a `,` every 3 digits)
 
 ## TODO
 
-The intent is to make the pattern for number representations flexible and
-configurable so it will support any format in use.
-
 Following topics are planned to be added:
 
-  * Configurable patterns
   * Visual mode increments/decrements with repeating
   * Keep original case, for now every value is lowercased
 

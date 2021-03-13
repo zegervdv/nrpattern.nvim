@@ -1,56 +1,6 @@
-local bigint = require"nrpattern.vendor.BigInteger"
-
 local M = {}
-
-local patterns = {
-  {
-    pattern = "(%d*)'h([%x_]+)",
-    base = 16,
-    format = "%s'h%s",
-    separator = {
-      char = "_",
-      group = 4,
-    },
-  },
-  {
-    pattern = "(%d*)'d([%d_]+)",
-    base = 10,
-    format = "%s'd%s",
-    separator = {
-      char = "_",
-      group = 3,
-    },
-  },
-  {
-    pattern = "(%d*)'b([01_]+)",
-    base = 2,
-    format = "%s'b%s",
-    separator = {
-      char = "_",
-      group = 4,
-    },
-  },
-  {
-    pattern = "(0[xX])([%x]+)",
-    base = 16,
-    format = "%s%s",
-  },
-  {
-    pattern = "(0b([01]+))",
-    base = 2,
-    format = "%s%s",
-  },
-  {
-    pattern = "(-?%d+)",
-    base = 10,
-    format = "%s%s",
-  },
-  {
-    pattern = "(0)(%d+)",
-    base = 8,
-    format = "%s%s",
-  },
-}
+local bigint = require"nrpattern.vendor.BigInteger"
+local patterns = {}
 
 function parse_value(value, base, increment)
   sign = "+"
@@ -206,6 +156,23 @@ function M.increment_range(incr, multiply)
   )
   -- Match builtin behaviour, jump to start of block (upper left corner)
   vim.api.nvim_win_set_cursor(0, {start_line + 1, start_col})
+end
+
+function priority_sort(el1, el2)
+  return el1.priority < el2.priority
+end
+
+function M.setup(config)
+  if config == nil then
+    config = require"nrpattern.default"
+  end
+
+  for pattern, opts in pairs(config) do
+    opts.pattern = pattern
+    table.insert(patterns, opts)
+  end
+
+  table.sort(patterns, priority_sort)
 end
 
 return M
