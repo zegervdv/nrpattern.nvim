@@ -2,6 +2,8 @@ local M = {}
 local bigint = require"nrpattern.vendor.BigInteger"
 local patterns = {}
 
+local last_range_size = 0
+
 function parse_value(value, base, increment)
   sign = "+"
   if value:sub(1, 1) == "-" then
@@ -118,18 +120,32 @@ function M.increment(incr)
   vim.api.nvim_win_set_cursor(0, {cursor[1], offset - 2})
 end
 
-function M.increment_range(incr, multiply)
-  local start_sel = vim.fn.getpos("'<")
-  local end_sel = vim.fn.getpos("'>")
+function M.increment_range(incr, multiply, repeats)
+  local start_line = nil
+  local start_col = nil
+  local end_line = nil
 
-  -- No virtualedits
-  if start_sel[4] == 1 or end_sel[4] == 1 then
-    return
+  if not repeats then
+    local start_sel = vim.fn.getpos("'<")
+    local end_sel = vim.fn.getpos("'>")
+
+    -- No virtualedits
+    if start_sel[4] == 1 or end_sel[4] == 1 then
+      return
+    end
+
+    start_line = math.min(start_sel[2], end_sel[2]) - 1
+    start_col = math.min(start_sel[3], end_sel[3]) - 1
+    end_line = math.max(start_sel[2], end_sel[2])
+
+    last_range_size = end_line - start_line
+  else
+    local start_sel = vim.api.nvim_win_get_cursor(0)
+
+    start_line = start_sel[1] - 1
+    start_col = start_sel[2]
+    end_line = start_line + last_range_size
   end
-
-  local start_line = math.min(start_sel[2], end_sel[2]) - 1
-  local start_col = math.min(start_sel[3], end_sel[3]) - 1
-  local end_line = math.max(start_sel[2], end_sel[2])
 
   local text = vim.api.nvim_buf_get_lines(0, start_line, end_line, true)
   local new_lines = {}
