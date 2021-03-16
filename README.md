@@ -5,7 +5,7 @@ decrement.
 
 **This plugin requires Neovim 0.5.**
 
-![preview](https://i.imgur.com/L9pmAy1.gif)
+![preview](https://i.imgur.com/yKIntlk.gif)
 
 ## Details
 
