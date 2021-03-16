@@ -5,6 +5,8 @@ decrement.
 
 **This plugin requires Neovim 0.5.**
 
+![preview](https://i.imgur.com/L9pmAy1.gif)
+
 ## Details
 
 In (Neo)vim you can increment or decrement values using the `<ctrl-a>` and `<ctrl-x>`
