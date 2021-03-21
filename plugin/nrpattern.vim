@@ -11,12 +11,15 @@ vnoremap <silent> <Plug>(PatternMultDecrement) :<C-u>call <SID>PatternMultDecrem
 nnoremap <silent> <Plug>(PatternMultIncrement) :<C-u>call <SID>PatternMultIncrement(v:count1, "true")<CR>
 nnoremap <silent> <Plug>(PatternMultDecrement) :<C-u>call <SID>PatternMultDecrement(v:count1, "true")<CR>
 
-nmap <C-a> <Plug>(PatternIncrement)
-nmap <C-x> <Plug>(PatternDecrement)
-vmap <C-a> <Plug>(PatternRangeIncrement)
-vmap <C-x> <Plug>(PatternRangeDecrement)
-vmap g<C-a> <Plug>(PatternMultIncrement)
-vmap g<C-x> <Plug>(PatternMultDecrement)
+if !exists('g:nrpattern_no_mapping')
+  echom "Loading maps"
+  nmap <C-a> <Plug>(PatternIncrement)
+  nmap <C-x> <Plug>(PatternDecrement)
+  vmap <C-a> <Plug>(PatternRangeIncrement)
+  vmap <C-x> <Plug>(PatternRangeDecrement)
+  vmap g<C-a> <Plug>(PatternMultIncrement)
+  vmap g<C-x> <Plug>(PatternMultDecrement)
+endif
 
 function! s:PatternIncrement(increment)
   call luaeval('require"nrpattern".increment(_A)', a:increment)

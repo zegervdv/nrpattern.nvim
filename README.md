@@ -117,6 +117,29 @@ location of the separators.
 For example the value `32'hff_fff_ff7` will become `32'hffff_fff8`, because the
 `group` setting for SystemVerilog hexadecimal values is set to 4.
 
+## Mappings
+
+By default `<ctrl-a>`, `<ctrl-x>`, and `g<ctrl-a>` and `g<ctrl-x>` are remapped
+to nrpattern. If you want to avoid this you can set `g:nrpattern_no_mapping`.
+
+```
+-- vimscript
+let g:nrpattern_no_mapping = 1
+
+-- lua
+vim.g.nrpattern_no_mapping = 1
+```
+
+To map them manually:
+```
+  nmap <C-a> <Plug>(PatternIncrement)
+  nmap <C-x> <Plug>(PatternDecrement)
+  vmap <C-a> <Plug>(PatternRangeIncrement)
+  vmap <C-x> <Plug>(PatternRangeDecrement)
+  vmap g<C-a> <Plug>(PatternMultIncrement)
+  vmap g<C-x> <Plug>(PatternMultDecrement)
+```
+
 ## TODO
 
 Following topics are planned to be added:
