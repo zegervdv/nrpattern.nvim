@@ -32,22 +32,26 @@ function match_word(text, col, incr)
   local match = nil
 
   for _, option in ipairs(patterns) do
-    if cursorword:match(option.pattern) then
-      start = beginning
-      match = option
-      break
+    if option.filetypes == nil or vim.tbl_contains(option.filetypes, vim.bo.filetype) then
+      if cursorword:match(option.pattern) then
+        start = beginning
+        match = option
+        break
+      end
     end
   end
 
   if not match then
     start = col
     for _, option in ipairs(patterns) do
-      local matchstart = text:find(option.pattern, col + 1)
+      if option.filetypes == nil or vim.tbl_contains(option.filetypes, vim.bo.filetype) then
+        local matchstart = text:find(option.pattern, col + 1)
 
-      if matchstart then
-        if not match or matchstart < start then
-          start = matchstart - 1
-          match = option
+        if matchstart then
+          if not match or matchstart < start then
+            start = matchstart - 1
+            match = option
+          end
         end
       end
     end

@@ -95,6 +95,7 @@ For every pattern you can set some options:
   * `separator` : Optional dict, for digit separators in pattern
     * `char` : Charactor to insert as separator
     * `group` : How many digits to group (e.g., add a `,` every 3 digits)
+  * `filetypes`: Optional list, filetypes to enable the pattern for
 
 Separators are inserted in the value when one was already present in the value.
 The separators are however inserted in fixed groups, regardless of the previous

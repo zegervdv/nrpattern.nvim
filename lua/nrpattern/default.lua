@@ -7,6 +7,7 @@ local patterns = {
       char = "_",
       group = 4,
     },
+    filetypes = {"verilog", "systemverilog"},
   },
   ["(%d*)'d([%d_]+)"] = {
     base = 10,
@@ -16,6 +17,7 @@ local patterns = {
       char = "_",
       group = 3,
     },
+    filetypes = {"verilog", "systemverilog"},
   },
   ["(%d*)'b([01_]+)"] = {
     base = 2,
@@ -25,6 +27,7 @@ local patterns = {
       char = "_",
       group = 4,
     },
+    filetypes = {"verilog", "systemverilog"},
   },
   ["(0[xX])([%x]+)"] = {
     base = 16,
