@@ -20,7 +20,11 @@ function parse_value(value, base, increment)
 end
 
 function format_value(value, base)
-  return value:toString(base):lower()
+  local new_value = value:toString(base):lower()
+  if #new_value == 0 then
+    new_value = "0"
+  end
+  return new_value
 end
 
 function update_numeric(match, start, text, incr)
