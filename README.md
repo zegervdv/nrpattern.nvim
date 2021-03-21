@@ -22,7 +22,13 @@ existance today, and likely many more will follow.
 
 This plugin allows you to define custom patterns.
 
-Supports repeating (partially) with `.` when `tpope/vim-repeat` is installed.
+### Features
+
+  * Custom formats and patterns
+  * Value separators
+  * Repeat with `.` (requires `tpope/vim-repeat`)
+  * Arbitrary large number support
+
 
 ## Installation
 
