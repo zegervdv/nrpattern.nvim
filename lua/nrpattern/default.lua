@@ -44,6 +44,16 @@ local patterns = {
     format = "%s%s",
     priority = 100,
   },
+  ["(-?[%d_]+)"] = {
+    base = 10,
+    format = "%s%s",
+    priority = 99,
+    separator = {
+      char = "_", 
+      group = 3
+    },
+    filetypes = {"python", "verilog", "systemverilog"},
+  },
   ["(0)(%d+)"] = {
     base = 8,
     format = "%s%s",
