@@ -80,10 +80,17 @@ The second must match the value with any possible separators.
 
 For example, to match `32'haaaa_bbbb` as a hexadecimal value, you need the
 pattern `"(%d*)'h([%x_]+)"`:
- * `(%d*)`: The prefix capture group, matches zero or more digits
- * `'h`: Literally match this string
- * `([%x_]+)`: The value capture group, match any hexadecimal charactor or `_`
- once or more
+  * `(%d*)`: The prefix capture group, matches zero or more digits
+  * `'h`: Literally match this string
+  * `([%x_]+)`: The value capture group, match any hexadecimal charactor or `_`
+  once or more
+
+If the pattern is a list, it matches each word in the list and cycles over the
+opions. For example you can toggle between `true` or `false`, or `in` and
+`out`.
+When the list has more than two options it cycles through the list in order of
+definition. E.g. for a list of `{'one', 'two', 'three'}`, when incrementing
+over the word `one` will update to `two`, then to `three`.
 
 For every pattern you can set some options:
 
@@ -108,9 +115,7 @@ For example the value `32'hff_fff_ff7` will become `32'hffff_fff8`, because the
 
 Following topics are planned to be added:
 
-  * Make repeating work for visually selected lines or blocks
   * Keep original case, for now every value is lowercased
-  * Support for cycling patterns: e.g. `true` to `false`
 
 If possible (harder problems):
 

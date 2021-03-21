@@ -49,6 +49,10 @@ local patterns = {
     format = "%s%s",
     priority = 101,
   },
+  [{"true", "false"}] = {
+    priority = 10,
+    format = "%s%s",
+  }
 }
 
 return patterns

@@ -23,44 +23,7 @@ function format_value(value, base)
   return value:toString(base):lower()
 end
 
-function match_word(text, col, incr)
-  -- Inspired by nvim-cursorline.lua
-  local cursorword, beginning, _ = unpack(vim.fn.matchstrpos(text:sub(1, col + 1), [[\k*$]]))
-  cursorword = cursorword .. vim.fn.matchstr(text:sub(col + 1), [[^\k*]]):sub(2)
-
-  local start = 0
-  local match = nil
-
-  for _, option in ipairs(patterns) do
-    if option.filetypes == nil or vim.tbl_contains(option.filetypes, vim.bo.filetype) then
-      if cursorword:match(option.pattern) then
-        start = beginning
-        match = option
-        break
-      end
-    end
-  end
-
-  if not match then
-    start = col
-    for _, option in ipairs(patterns) do
-      if option.filetypes == nil or vim.tbl_contains(option.filetypes, vim.bo.filetype) then
-        local matchstart = text:find(option.pattern, col + 1)
-
-        if matchstart then
-          if not match or matchstart < start then
-            start = matchstart - 1
-            match = option
-          end
-        end
-      end
-    end
-  end
-
-  if not match then
-    return
-  end
-
+function update_numeric(match, start, text, incr)
   local s, e, prefix, value = text:find(match.pattern, start)
   if not value and prefix then
     value = prefix
@@ -99,6 +62,87 @@ function match_word(text, col, incr)
   end
 
   new_value = string.format(match.format, prefix, value_formatted)
+  
+  return new_value, s, e
+end
+
+function update_cyclic(match, start, text, incr)
+  for i, word in ipairs(match.pattern) do
+    local s, e = text:find(word, start)
+    if s then
+      if i >= #match.pattern then
+        i = 0
+      end
+      local new_value = match.pattern[i + 1]
+
+      return new_value, s, e
+    end
+  end
+end
+
+function match_word(text, col, incr)
+  -- Inspired by nvim-cursorline.lua
+  local cursorword, beginning, _ = unpack(vim.fn.matchstrpos(text:sub(1, col + 1), [[\k*$]]))
+  cursorword = cursorword .. vim.fn.matchstr(text:sub(col + 1), [[^\k*]]):sub(2)
+
+  local start = 0
+  local match = nil
+
+  for _, option in ipairs(patterns) do
+    if option.filetypes == nil or vim.tbl_contains(option.filetypes, vim.bo.filetype) then
+      if option.cyclic then
+        if vim.tbl_contains(option.pattern, cursorword) then
+          start = beginning
+          match = option
+          break
+        end
+      else
+        if cursorword:match(option.pattern) then
+          start = beginning
+          match = option
+          break
+        end
+      end
+    end
+  end
+
+  if not match then
+    start = col
+    for _, option in ipairs(patterns) do
+      if option.filetypes == nil or vim.tbl_contains(option.filetypes, vim.bo.filetype) then
+        local matchstart = nil
+
+        if option.cyclic then
+          for _, word in ipairs(option.pattern) do
+            matchstart = text:find(word, col + 1)
+            if matchstart then
+              break
+            end
+          end
+        else
+          matchstart = text:find(option.pattern, col + 1)
+        end
+
+        if matchstart then
+          if not match or matchstart < start then
+            start = matchstart - 1
+            match = option
+          end
+        end
+      end
+    end
+  end
+
+  if not match then
+    return
+  end
+
+  local new_value, s, e
+  if match.cyclic then
+    new_value, s, e = update_cyclic(match, start, text, incr)
+  else
+    new_value, s, e = update_numeric(match, start, text, incr)
+  end
 
   new_line = text:sub(1, s - 1) .. new_value .. text:sub(e + 1)
   return new_line, s + #new_value
@@ -189,6 +233,9 @@ function M.setup(config)
 
   for pattern, opts in pairs(config) do
     opts.pattern = pattern
+    if vim.tbl_islist(pattern) then
+      opts.cyclic = true
+    end
     table.insert(patterns, opts)
   end
 

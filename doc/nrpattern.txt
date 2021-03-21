@@ -42,6 +42,13 @@ into the buffer.
 The second capture group will be used as the actual value. This match may 
 only contain digits or hexadecimal characters, or the separator characters.
 
+
+If the pattern is a list, it will match any of the words in the list.
+The increment will then cycle through all options in the list.
+For example a pattern of `{"true", "false"}` will match either word and replace
+it with the opposite. When more than two words are in the list, incrementing
+will cycle through them.
+
 ------------------------------------------------------------------------------
 2.2 OPTIONS                                                *nrpattern-options*
 
