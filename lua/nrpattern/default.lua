@@ -44,7 +44,7 @@ local patterns = {
     format = "%s%s",
     priority = 100,
   },
-  ["(-?[%d_]+)"] = {
+  ["(-?%d[%d_]+)"] = {
     base = 10,
     format = "%s%s",
     priority = 99,
