@@ -12,7 +12,6 @@ nnoremap <silent> <Plug>(PatternMultIncrement) :<C-u>call <SID>PatternMultIncrem
 nnoremap <silent> <Plug>(PatternMultDecrement) :<C-u>call <SID>PatternMultDecrement(v:count1, "true")<CR>
 
 if !exists('g:nrpattern_no_mapping')
-  echom "Loading maps"
   nmap <C-a> <Plug>(PatternIncrement)
   nmap <C-x> <Plug>(PatternDecrement)
   vmap <C-a> <Plug>(PatternRangeIncrement)
