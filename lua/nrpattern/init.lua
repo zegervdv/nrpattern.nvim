@@ -76,10 +76,8 @@ function update_cyclic(match, start, text, incr)
   for i, word in ipairs(match.pattern) do
     local m, s, e = unpack(vim.fn.matchstrpos(text, [[\<]] .. word .. [[\>]], start - 1))
     if s == start then
-      if i >= #match.pattern then
-        i = 0
-      end
-      local new_value = match.pattern[i + 1]
+      local index = (i + incr - 1) % #match.pattern
+      local new_value = match.pattern[index + 1]
 
       return new_value, s + 1, e
     end
