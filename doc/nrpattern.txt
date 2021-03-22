@@ -113,8 +113,15 @@ hexadecimal values: >
          char = "_",
          group = 4,
        },
+       filetypes = {"systemverilog", "verilog"},
      },
    }
+
+A cyclic pattern that toggles between "yes" and "no": >
+
+  patterns = {
+    [{"yes", "no"}] = { priority = 10 },
+  }
 
 ==============================================================================
 3. LICENSE                                                 *nrpattern-license*

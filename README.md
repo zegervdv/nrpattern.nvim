@@ -28,6 +28,7 @@ This plugin allows you to define custom patterns.
   * Value separators
   * Repeat with `.` (requires `tpope/vim-repeat`)
   * Arbitrary large number support
+  * Cyclic patterns: toggle between words
 
 
 ## Installation
@@ -36,6 +37,7 @@ This plugin allows you to define custom patterns.
 
 ``` vimscript
 Plug 'zegervdv/nrpattern.nvim'
+lua require"nrpattern".setup()
 ```
 
  * packer.nvim
@@ -73,6 +75,9 @@ patterns["(%d*)'h([%x_]+)"].separator.group = 8
 
 -- Remove a pattern
 patterns["(%d*)'h([%x_]+)"] = nil
+
+-- Add a cyclic pattern (toggles between yes and no)
+patterns[{"yes", "no"}] = {priority = 5}
 
 -- Call the setup to enable the patterns
 require"nrpattern".setup(patterns)
