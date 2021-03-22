@@ -239,6 +239,7 @@ function M.setup(config)
     opts.pattern = pattern
     if vim.tbl_islist(pattern) then
       opts.cyclic = true
+      opts.format = "%s%s"
     end
     table.insert(patterns, opts)
   end

@@ -61,7 +61,6 @@ local patterns = {
   },
   [{"true", "false"}] = {
     priority = 10,
-    format = "%s%s",
   }
 }
 
