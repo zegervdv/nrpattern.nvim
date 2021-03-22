@@ -71,15 +71,17 @@ function update_numeric(match, start, text, incr)
 end
 
 function update_cyclic(match, start, text, incr)
+  local matchstart = nil
+
   for i, word in ipairs(match.pattern) do
-    local s, e = text:find(word, start)
-    if s then
+    local m, s, e = unpack(vim.fn.matchstrpos(text, [[\<]] .. word .. [[\>]], start - 1))
+    if s == start then
       if i >= #match.pattern then
         i = 0
       end
       local new_value = match.pattern[i + 1]
 
-      return new_value, s, e
+      return new_value, s + 1, e
     end
   end
 end
@@ -118,8 +120,9 @@ function match_word(text, col, incr)
 
         if option.cyclic then
           for _, word in ipairs(option.pattern) do
-            matchstart = text:find(word, col + 1)
-            if matchstart then
+            local m, s, _ = unpack(vim.fn.matchstrpos(text, [[\<]] .. word .. [[\>]], col - 1))
+            if m ~= "" then
+              matchstart = s + 1
               break
             end
           end
