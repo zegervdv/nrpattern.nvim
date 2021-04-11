@@ -52,7 +52,7 @@ local patterns = {
       char = "_", 
       group = 3
     },
-    filetypes = {"python", "verilog", "systemverilog"},
+    filetypes = {"python", "verilog", "systemverilog", "php"},
   },
   ["(0)(%d+)"] = {
     base = 8,

@@ -25,7 +25,7 @@ This plugin allows you to define custom patterns.
 ### Features
 
   * Custom formats and patterns
-  * Value separators
+  * Value separators (e.g. `123_1231` for python or php)
   * Repeat with `.` (requires `tpope/vim-repeat`)
   * Arbitrary large number support
   * Cyclic patterns: toggle between words
@@ -150,6 +150,7 @@ To map them manually:
 Following topics are planned to be added:
 
   * Keep original case, for now every value is lowercased
+  * Keep leading zeros
 
 If possible (harder problems):
 
