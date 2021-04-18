@@ -9,9 +9,29 @@ local patterns = {
     },
     filetypes = {"verilog", "systemverilog"},
   },
+  ["-?(%d*)'sh([%x_]+)"] = {
+    base = 16,
+    format = "%s'sh%s",
+    priority = 10,
+    separator = {
+      char = "_",
+      group = 4,
+    },
+    filetypes = {"verilog", "systemverilog"},
+  },
   ["-?(%d*)'d([%d_]+)"] = {
     base = 10,
     format = "%s'd%s",
+    priority = 10,
+    separator = {
+      char = "_",
+      group = 3,
+    },
+    filetypes = {"verilog", "systemverilog"},
+  },
+  ["-?(%d*)'sd([%d_]+)"] = {
+    base = 10,
+    format = "%s'sd%s",
     priority = 10,
     separator = {
       char = "_",
