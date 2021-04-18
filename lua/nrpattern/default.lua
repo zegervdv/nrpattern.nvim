@@ -32,7 +32,17 @@ local patterns = {
   ["(0[xX])([%x]+)"] = {
     base = 16,
     format = "%s%s",
+    priority = 100,
+  },
+  ["(0[xX])([%x_]+)"] = {
+    base = 16,
+    format = "%s%s",
     priority = 99,
+    separator = {
+      char = "_",
+      group = 4
+    },
+    filetypes = {"python", "php"},
   },
   ["(0b([01]+))"] = {
     base = 2,
@@ -49,7 +59,7 @@ local patterns = {
     format = "%s%s",
     priority = 99,
     separator = {
-      char = "_", 
+      char = "_",
       group = 3
     },
     filetypes = {"python", "verilog", "systemverilog", "php"},
