@@ -1,5 +1,5 @@
 local patterns = {
-  ["(%d*)'h([%x_]+)"] = {
+  ["-?(%d*)'h([%x_]+)"] = {
     base = 16,
     format = "%s'h%s",
     priority = 10,
@@ -9,7 +9,7 @@ local patterns = {
     },
     filetypes = {"verilog", "systemverilog"},
   },
-  ["(%d*)'d([%d_]+)"] = {
+  ["-?(%d*)'d([%d_]+)"] = {
     base = 10,
     format = "%s'd%s",
     priority = 10,

@@ -4,9 +4,9 @@ local patterns = {}
 
 local last_range_size = 0
 
-function parse_value(value, base, increment)
-  sign = "+"
-  if value:sub(1, 1) == "-" then
+function parse_value(value, base, increment, negative)
+  local sign = "+"
+  if negative or value:sub(1, 1) == "-" then
     sign = "-"
   end
   val = bigint:new(value, sign, base)
@@ -21,10 +21,16 @@ end
 
 function format_value(value, base)
   local new_value = value:toString(base):lower()
+  local sign = nil
   if #new_value == 0 then
     new_value = "0"
   end
-  return new_value
+  
+  if new_value:sub(1, 1) == "-" then
+    sign = "-"
+    new_value = new_value:sub(2)
+  end
+  return sign, new_value
 end
 
 function update_numeric(match, start, text, incr)
@@ -34,15 +40,16 @@ function update_numeric(match, start, text, incr)
     prefix = ""
   end
   local prexiflen = (e - s) - #value
+  local negative = text:sub(s,s) == "-"
 
   local has_separator = false
   if match.separator and value:find(match.separator.char) then
     value = value:gsub(match.separator.char, "")
     has_separator = true
   end
-  local parsed_value = parse_value(value, match.base, incr)
+  local parsed_value = parse_value(value, match.base, incr, negative)
 
-  local value_formatted = format_value(parsed_value, match.base)
+  local sign, value_formatted = format_value(parsed_value, match.base)
 
   if has_separator then
     local substring = ""
@@ -66,6 +73,9 @@ function update_numeric(match, start, text, incr)
   end
 
   new_value = string.format(match.format, prefix, value_formatted)
+  if sign ~= nil then
+    new_value = sign .. new_value
+  end
   
   return new_value, s, e
 end

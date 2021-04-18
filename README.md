@@ -151,7 +151,6 @@ Following topics are planned to be added:
 
   * Keep original case, for now every value is lowercased
   * Keep leading zeros
-  * Negative number formatting
 
 If possible (harder problems):
 
