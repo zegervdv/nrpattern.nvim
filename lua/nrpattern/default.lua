@@ -74,7 +74,7 @@ local patterns = {
     format = "%s%s",
     priority = 100,
   },
-  ["(-?%d[%d_]+)"] = {
+  ["(-?%d[%d_]+%d+)"] = {
     base = 10,
     format = "%s%s",
     priority = 99,
