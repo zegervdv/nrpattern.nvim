@@ -1,33 +1,33 @@
 local M = {}
-local bigint = require"nrpattern.vendor.BigInteger"
+local bigint = require 'nrpattern.vendor.BigInteger'
 local patterns = {}
 
 local last_range_size = 0
 
 function parse_value(value, base, increment, negative)
-  local sign = "+"
-  if negative or value:sub(1, 1) == "-" then
-    sign = "-"
+  local sign = '+'
+  if negative or value:sub(1, 1) == '-' then
+    sign = '-'
   end
   val = bigint:new(value, sign, base)
 
   if increment >= 0 then
-    sign = "+"
+    sign = '+'
   else
-    sign = "-"
+    sign = '-'
   end
-  return val:add(bigint:new(string.format("%d", increment), sign))
+  return val:add(bigint:new(string.format('%d', increment), sign))
 end
 
 function format_value(value, base)
   local new_value = value:toString(base):lower()
   local sign = nil
   if #new_value == 0 then
-    new_value = "0"
+    new_value = '0'
   end
-  
-  if new_value:sub(1, 1) == "-" then
-    sign = "-"
+
+  if new_value:sub(1, 1) == '-' then
+    sign = '-'
     new_value = new_value:sub(2)
   end
   return sign, new_value
@@ -37,14 +37,14 @@ function update_numeric(match, start, text, incr)
   local s, e, prefix, value = text:find(match.pattern, start)
   if not value and prefix then
     value = prefix
-    prefix = ""
+    prefix = ''
   end
   local prexiflen = (e - s) - #value
-  local negative = text:sub(s,s) == "-"
+  local negative = text:sub(s, s) == '-'
 
   local has_separator = false
   if match.separator and value:find(match.separator.char) then
-    value = value:gsub(match.separator.char, "")
+    value = value:gsub(match.separator.char, '')
     has_separator = true
   end
   local parsed_value = parse_value(value, match.base, incr, negative)
@@ -52,7 +52,7 @@ function update_numeric(match, start, text, incr)
   local sign, value_formatted = format_value(parsed_value, match.base)
 
   if has_separator then
-    local substring = ""
+    local substring = ''
     for i = 1, math.ceil(#value_formatted / match.separator.group) do
       local low = #value_formatted - i * match.separator.group + 1
       local high = #value_formatted - (i - 1) * match.separator.group
@@ -76,7 +76,7 @@ function update_numeric(match, start, text, incr)
   if sign ~= nil then
     new_value = sign .. new_value
   end
-  
+
   return new_value, s, e
 end
 
@@ -129,7 +129,7 @@ function match_word(text, col, incr)
         if option.cyclic then
           for _, word in ipairs(option.pattern) do
             local m, s, _ = unpack(vim.fn.matchstrpos(text, [[\<]] .. word .. [[\>]], col - 1))
-            if m ~= "" then
+            if m ~= '' then
               matchstart = s + 1
               break
             end
@@ -180,7 +180,7 @@ function M.increment(incr)
     { new_line }
   )
   -- Match builtin behaviour, jump to last character of value
-  vim.api.nvim_win_set_cursor(0, {cursor[1], offset - 2})
+  vim.api.nvim_win_set_cursor(0, { cursor[1], offset - 2 })
 end
 
 function M.increment_range(incr, multiply, repeats)
@@ -189,8 +189,8 @@ function M.increment_range(incr, multiply, repeats)
   local end_line = nil
 
   if not repeats then
-    local start_sel = vim.fn.getpos("'<")
-    local end_sel = vim.fn.getpos("'>")
+    local start_sel = vim.fn.getpos "'<"
+    local end_sel = vim.fn.getpos "'>"
 
     -- No virtualedits
     if start_sel[4] == 1 or end_sel[4] == 1 then
@@ -213,7 +213,7 @@ function M.increment_range(incr, multiply, repeats)
   local text = vim.api.nvim_buf_get_lines(0, start_line, end_line, true)
   local new_lines = {}
   for i, line in ipairs(text) do
-    local increment = incr;
+    local increment = incr
     if multiply then
       increment = incr * i
     end
@@ -226,15 +226,9 @@ function M.increment_range(incr, multiply, repeats)
     end
   end
 
-  vim.api.nvim_buf_set_lines(
-    0,
-    start_line,
-    end_line,
-    true,
-    new_lines
-  )
+  vim.api.nvim_buf_set_lines(0, start_line, end_line, true, new_lines)
   -- Match builtin behaviour, jump to start of block (upper left corner)
-  vim.api.nvim_win_set_cursor(0, {start_line + 1, start_col})
+  vim.api.nvim_win_set_cursor(0, { start_line + 1, start_col })
 end
 
 function priority_sort(el1, el2)
@@ -243,14 +237,14 @@ end
 
 function M.setup(config)
   if config == nil then
-    config = require"nrpattern.default"
+    config = require 'nrpattern.default'
   end
 
   for pattern, opts in pairs(config) do
     opts.pattern = pattern
     if vim.tbl_islist(pattern) then
       opts.cyclic = true
-      opts.format = "%s%s"
+      opts.format = '%s%s'
     end
     table.insert(patterns, opts)
   end

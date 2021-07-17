@@ -4,94 +4,94 @@ local patterns = {
     format = "%s'h%s",
     priority = 10,
     separator = {
-      char = "_",
+      char = '_',
       group = 4,
     },
-    filetypes = {"verilog", "systemverilog"},
+    filetypes = { 'verilog', 'systemverilog' },
   },
   ["-?(%d*)'sh([%x_]+)"] = {
     base = 16,
     format = "%s'sh%s",
     priority = 10,
     separator = {
-      char = "_",
+      char = '_',
       group = 4,
     },
-    filetypes = {"verilog", "systemverilog"},
+    filetypes = { 'verilog', 'systemverilog' },
   },
   ["-?(%d*)'d([%d_]+)"] = {
     base = 10,
     format = "%s'd%s",
     priority = 10,
     separator = {
-      char = "_",
+      char = '_',
       group = 3,
     },
-    filetypes = {"verilog", "systemverilog"},
+    filetypes = { 'verilog', 'systemverilog' },
   },
   ["-?(%d*)'sd([%d_]+)"] = {
     base = 10,
     format = "%s'sd%s",
     priority = 10,
     separator = {
-      char = "_",
+      char = '_',
       group = 3,
     },
-    filetypes = {"verilog", "systemverilog"},
+    filetypes = { 'verilog', 'systemverilog' },
   },
   ["(%d*)'b([01_]+)"] = {
     base = 2,
     format = "%s'b%s",
     priority = 10,
     separator = {
-      char = "_",
+      char = '_',
       group = 4,
     },
-    filetypes = {"verilog", "systemverilog"},
+    filetypes = { 'verilog', 'systemverilog' },
   },
-  ["(0[xX])([%x]+)"] = {
+  ['(0[xX])([%x]+)'] = {
     base = 16,
-    format = "%s%s",
+    format = '%s%s',
     priority = 100,
   },
-  ["(0[xX])([%x_]+)"] = {
+  ['(0[xX])([%x_]+)'] = {
     base = 16,
-    format = "%s%s",
+    format = '%s%s',
     priority = 99,
     separator = {
-      char = "_",
-      group = 4
+      char = '_',
+      group = 4,
     },
-    filetypes = {"python", "php"},
+    filetypes = { 'python', 'php' },
   },
-  ["(0b([01]+))"] = {
+  ['(0b([01]+))'] = {
     base = 2,
-    format = "%s%s",
+    format = '%s%s',
     priority = 99,
   },
-  ["(-?%d+)"] = {
+  ['(-?%d+)'] = {
     base = 10,
-    format = "%s%s",
+    format = '%s%s',
     priority = 100,
   },
-  ["(-?%d[%d_]+%d+)"] = {
+  ['(-?%d[%d_]+%d+)'] = {
     base = 10,
-    format = "%s%s",
+    format = '%s%s',
     priority = 99,
     separator = {
-      char = "_",
-      group = 3
+      char = '_',
+      group = 3,
     },
-    filetypes = {"python", "verilog", "systemverilog", "php"},
+    filetypes = { 'python', 'verilog', 'systemverilog', 'php' },
   },
-  ["(0)(%d+)"] = {
+  ['(0)(%d+)'] = {
     base = 8,
-    format = "%s%s",
+    format = '%s%s',
     priority = 101,
   },
-  [{"true", "false"}] = {
+  [{ 'true', 'false' }] = {
     priority = 10,
-  }
+  },
 }
 
 return patterns
