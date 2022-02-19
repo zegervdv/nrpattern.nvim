@@ -93,7 +93,7 @@ For example, to match `32'haaaa_bbbb` as a hexadecimal value, you need the
 pattern `"(%d*)'h([%x_]+)"`:
   * `(%d*)`: The prefix capture group, matches zero or more digits
   * `'h`: Literally match this string
-  * `([%x_]+)`: The value capture group, match any hexadecimal charactor or `_`
+  * `([%x_]+)`: The value capture group, match any hexadecimal character or `_`
   once or more
 
 If the pattern is a list, it matches each word in the list and cycles over the
@@ -111,7 +111,7 @@ For every pattern you can set some options:
   * `priority` : Order in which to match patterns, lower is earlier. See
   [default.lua](https://github.com/zegervdv/nrpattern.nvim/blob/master/lua/nrpattern/init.lua) for default values.
   * `separator` : Optional dict, for digit separators in pattern
-    * `char` : Charactor to insert as separator
+    * `char` : character to insert as separator
     * `group` : How many digits to group (e.g., add a `,` every 3 digits)
   * `filetypes`: Optional list, filetypes to enable the pattern for
 
