@@ -4,6 +4,9 @@ local patterns = {}
 
 local last_range_size = 0
 
+M.operation = nil
+M.count = nil
+
 function parse_value(value, base, increment, negative)
   local sign = '+'
   if negative or value:sub(1, 1) == '-' then
@@ -250,6 +253,83 @@ function M.setup(config)
   end
 
   table.sort(patterns, priority_sort)
+
+  local t = function(str)
+    return vim.api.nvim_replace_termcodes(str, true, false, true)
+  end
+
+  vim.keymap.set('n', '<Plug>(PatternIncrement)', function()
+    M.increment(vim.v.count1)
+    vim.fn['repeat#set'](t '<Plug>(PatternIncrement)', vim.v.count1)
+  end, { desc = 'Increment number under or right of cursor' })
+  vim.keymap.set('n', '<Plug>(PatternDecrement)', function()
+    M.increment(-1 * vim.v.count)
+    vim.fn['repeat#set'](t '<Plug>(PatternDecrement)', vim.v.count1)
+  end, { desc = 'Decrement number under or right of cursor' })
+
+  -- Visual selection of numbers
+  vim.keymap.set('v', '<Plug>(PatternRangeIncrement)', function()
+    M.increment_range(vim.v.count1, false, false)
+    vim.fn['repeat#set'](t '<Plug>(PatternRangeIncrement)')
+  end, { desc = 'Increment range of numbers' })
+  vim.keymap.set('n', '<Plug>(PatternRangeIncrement)', function()
+    M.increment_range(vim.v.count1, false, true)
+    vim.fn['repeat#set'](t '<Plug>(PatternRangeIncrement)')
+  end, { desc = 'Increment range of numbers (repeat)' })
+  vim.keymap.set('v', '<Plug>(PatternRangeDecrement)', function()
+    M.increment_range(-1 * vim.v.count1, false, false)
+    vim.fn['repeat#set'](t '<Plug>(PatternRangeDecrement)')
+  end, { desc = 'Decrement range of numbers' })
+  vim.keymap.set('n', '<Plug>(PatternRangeDecrement)', function()
+    M.increment_range(-1 * vim.v.count1, false, true)
+    vim.fn['repeat#set'](t '<Plug>(PatternRangeDecrement)')
+  end, { desc = 'Decrement range of numbers (repeat)' })
+
+  -- Visual selection with incrementing increments
+  vim.keymap.set('v', '<Plug>(PatternMultIncrement)', function()
+    M.increment_range(vim.v.count1, true, false)
+    vim.fn['repeat#set'](t '<Plug>(PatternMultIncrement)', vim.v.coun1)
+  end, { desc = 'Increment range of numbers incrementally' })
+  vim.keymap.set('n', '<Plug>(PatternMultIncrement)', function()
+    M.increment_range(vim.v.count1, true, true)
+    vim.fn['repeat#set'](t '<Plug>(PatternMultIncrement)', vim.v.coun1)
+  end, { desc = 'Increment range of numbers incrementally (repeat)' })
+  vim.keymap.set('v', '<Plug>(PatternMultDecrement)', function()
+    M.increment_range(-1 * vim.v.count1, true, false)
+    vim.fn['repeat#set'](t '<Plug>(PatternMultDecrement)', vim.v.coun1)
+  end, { desc = 'Decrement range of numbers incrementally' })
+  vim.keymap.set('n', '<Plug>(PatternMultDecrement)', function()
+    M.increment_range(-1 * vim.v.count1, true, true)
+    vim.fn['repeat#set'](t '<Plug>(PatternMultDecrement)', vim.v.count1)
+  end, { desc = 'Decrement range of numbers incrementally (repeat)' })
+
+  -- Actual keymaps
+  vim.keymap.set(
+    'n',
+    '<C-a>',
+    '<Plug>(PatternIncrement)',
+    { desc = 'Increment number under or right of cursor', remap = true }
+  )
+  vim.keymap.set(
+    'n',
+    '<C-x>',
+    '<Plug>(PatternDecrement)',
+    { desc = 'Decrement number under or right of cursor', remap = true }
+  )
+  vim.keymap.set('v', '<C-a>', '<Plug>(PatternRangeIncrement)', { desc = 'Increment range of numbers', remap = true })
+  vim.keymap.set('v', '<C-x>', '<Plug>(PatternRangeDecrement)', { desc = 'Decrement range of numbers', remap = true })
+  vim.keymap.set(
+    'v',
+    'g<C-a>',
+    '<Plug>(PatternMultIncrement)',
+    { desc = 'Increment range of numbers incrementally', remap = true }
+  )
+  vim.keymap.set(
+    'v',
+    'g<C-x>',
+    '<Plug>(PatternMultDecrement)',
+    { desc = 'Decrement range of numbers incrementally', remap = true }
+  )
 end
 
 return M
