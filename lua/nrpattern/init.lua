@@ -263,7 +263,7 @@ function M.setup(config)
     vim.fn['repeat#set'](t '<Plug>(PatternIncrement)', vim.v.count1)
   end, { desc = 'Increment number under or right of cursor' })
   vim.keymap.set('n', '<Plug>(PatternDecrement)', function()
-    M.increment(-1 * vim.v.count)
+    M.increment(-1 * vim.v.count1)
     vim.fn['repeat#set'](t '<Plug>(PatternDecrement)', vim.v.count1)
   end, { desc = 'Decrement number under or right of cursor' })
 
