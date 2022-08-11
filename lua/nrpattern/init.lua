@@ -166,6 +166,10 @@ function match_word(text, col, incr)
   return new_line, s + #new_value
 end
 
+function M.repeat_operation()
+  M.operation(M.count)
+end
+
 function M.increment(incr)
   local cursor = vim.api.nvim_win_get_cursor(0)
   local text = vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1]
@@ -304,18 +308,18 @@ function M.setup(config)
   end, { desc = 'Decrement range of numbers incrementally (repeat)' })
 
   -- Actual keymaps
-  vim.keymap.set(
-    'n',
-    '<C-a>',
-    '<Plug>(PatternIncrement)',
-    { desc = 'Increment number under or right of cursor', remap = true }
-  )
-  vim.keymap.set(
-    'n',
-    '<C-x>',
-    '<Plug>(PatternDecrement)',
-    { desc = 'Decrement number under or right of cursor', remap = true }
-  )
+  vim.keymap.set('n', '<C-a>', function()
+    M.operation = M.increment
+    M.count = vim.v.count1
+    vim.go.operatorfunc = "v:lua.require'nrpattern'.repeat_operation"
+    return 'g@l'
+  end, { desc = 'Increment number under or right of cursor', expr = true })
+  vim.keymap.set('n', '<C-x>', function()
+    M.operation = M.increment
+    M.count = -vim.v.count1
+    vim.go.operatorfunc = "v:lua.require'nrpattern'.repeat_operation"
+    return 'g@l'
+  end, { desc = 'Decrement number under or right of cursor', expr = true })
   vim.keymap.set('v', '<C-a>', '<Plug>(PatternRangeIncrement)', { desc = 'Increment range of numbers', remap = true })
   vim.keymap.set('v', '<C-x>', '<Plug>(PatternRangeDecrement)', { desc = 'Decrement range of numbers', remap = true })
   vim.keymap.set(
