@@ -242,7 +242,7 @@ function M.setup(config)
 
   for pattern, opts in pairs(config) do
     opts.pattern = pattern
-    if vim.tbl_islist(pattern) then
+    if vim.islist(pattern) then
       opts.cyclic = true
       opts.format = '%s%s'
     end
